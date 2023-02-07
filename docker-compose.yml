@@ -1,0 +1,50 @@
+version: "3"
+services:
+  app_react:
+    build: ./front-end
+    container_name: app_react
+    env_file:
+      - ./front-end/.env
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - app_node
+
+  database:
+    image: postgres
+    container_name: database
+    ports:
+      - 2345:5432
+    env_file:
+      - ./back-end/.env
+    volumes:
+      - volume_database:/var/lib/postgresql/data
+
+  app_node:
+    build: ./back-end
+    container_name: app_node
+    ports:
+      - 5000:5000
+    env_file:
+      - ./back-end/.env
+    volumes:
+      - ./back-end:/usr/src
+      - /usr/src/node_modules
+    entrypoint: dockerize -wait tcp://database:5432 -timeout 20s docker-entrypoint.sh
+    command: "npm run start"
+    depends_on:
+      - database
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 4322:80
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - app_react
+
+volumes:
+  build_react:
+  volume_database:
