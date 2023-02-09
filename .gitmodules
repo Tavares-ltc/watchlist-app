@@ -1,6 +1,6 @@
 [submodule "watchlist-back"]
 	path = watchlist-back
-	url = git@github.com:Tavares-ltc/watchlist-back.git
+	url = https://github.com/Tavares-ltc/watchlist-back.git
 [submodule "watchlist-front"]
 	path = watchlist-front
-	url = git@github.com:Tavares-ltc/watchlist-front.git
+	url = https://github.com/Tavares-ltc/watchlist-front.git
